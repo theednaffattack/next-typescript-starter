@@ -1,5 +1,5 @@
 {
-  "name": "with-jest-typescript",
+  "name": "next-typescript-starter",
   "version": "1.0.0",
   "scripts": {
     "test": "jest",
