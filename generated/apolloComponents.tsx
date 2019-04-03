@@ -21,7 +21,7 @@ export type Mutation = {
   changePassword?: Maybe<User>;
   confirmUser: Scalars["Boolean"];
   forgotPassword: Scalars["Boolean"];
-  login: User;
+  login?: Maybe<User>;
   logout: Scalars["Boolean"];
   register: User;
   addProfilePicture: Scalars["Boolean"];
@@ -98,9 +98,22 @@ export type LoginMutationVariables = {
 };
 
 export type LoginMutation = { __typename?: "Mutation" } & {
-  login: { __typename?: "User" } & Pick<
+  login: Maybe<
+    { __typename?: "User" } & Pick<
+      User,
+      "firstName" | "lastName" | "email" | "name" | "id"
+    >
+  >;
+};
+
+export type RegisterMutationVariables = {
+  data: RegisterInput;
+};
+
+export type RegisterMutation = { __typename?: "Mutation" } & {
+  register: { __typename?: "User" } & Pick<
     User,
-    "firstName" | "lastName" | "email" | "name" | "id"
+    "id" | "firstName" | "lastName" | "email" | "name"
   >;
 };
 
@@ -156,4 +169,55 @@ export function withLogin<TProps, TChildProps = {}>(
     LoginMutationVariables,
     LoginProps<TChildProps>
   >(LoginDocument, operationOptions);
+}
+export const RegisterDocument = gql`
+  mutation Register($data: RegisterInput!) {
+    register(data: $data) {
+      id
+      firstName
+      lastName
+      email
+      name
+    }
+  }
+`;
+
+export class RegisterComponent extends React.Component<
+  Partial<
+    ReactApollo.MutationProps<RegisterMutation, RegisterMutationVariables>
+  >
+> {
+  render() {
+    return (
+      <ReactApollo.Mutation<RegisterMutation, RegisterMutationVariables>
+        mutation={RegisterDocument}
+        {...(this as any)["props"] as any}
+      />
+    );
+  }
+}
+export type RegisterProps<TChildProps = {}> = Partial<
+  ReactApollo.MutateProps<RegisterMutation, RegisterMutationVariables>
+> &
+  TChildProps;
+export type RegisterMutationFn = ReactApollo.MutationFn<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
+export function withRegister<TProps, TChildProps = {}>(
+  operationOptions:
+    | ReactApollo.OperationOption<
+        TProps,
+        RegisterMutation,
+        RegisterMutationVariables,
+        RegisterProps<TChildProps>
+      >
+    | undefined
+) {
+  return ReactApollo.withMutation<
+    TProps,
+    RegisterMutation,
+    RegisterMutationVariables,
+    RegisterProps<TChildProps>
+  >(RegisterDocument, operationOptions);
 }
