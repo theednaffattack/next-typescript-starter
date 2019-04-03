@@ -1,4 +1,5 @@
 import CarsOverview from "./../src/modules/cars/Overview";
+import Layout from "./../src/components/Layout";
 
 const __CARS__ = [
   {
@@ -27,6 +28,11 @@ const __CARS__ = [
   }
 ];
 
-const CarsPage = () => <CarsOverview cars={__CARS__} />;
+const CarsPage = () => (
+  <Layout>
+    {" "}
+    <CarsOverview cars={__CARS__} />
+  </Layout>
+);
 
 export default CarsPage;

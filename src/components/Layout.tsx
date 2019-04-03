@@ -1,6 +1,7 @@
 import * as React from "react";
-import Link from "next/link";
 import Head from "next/head";
+
+import MyLink from "./MyLink/MyLink";
 
 type Props = {
   title?: string;
@@ -18,23 +19,23 @@ const Layout: React.FunctionComponent<Props> = ({
     </Head>
     <header>
       <nav>
-        <Link href="/">
+        <MyLink prefetch pathn href="/" name="home">
           <a>Home</a>
-        </Link>{" "}
+        </MyLink>{" "}
         |{" "}
-        <Link href="/cars">
+        <MyLink prefetch pathn href="/cars" name="cars">
           <a>Cars</a>
-        </Link>{" "}
+        </MyLink>{" "}
         |{" "}
-        <Link href="/login">
+        <MyLink prefetch pathn href="/login" name="login">
           <a>Login</a>
-        </Link>{" "}
+        </MyLink>{" "}
       </nav>
     </header>
     {children}
     <footer>
       <hr />
-      <span>I'm here to stay (Footer)</span>
+      <span>Made with ❤️ by Eddie Naff</span>
     </footer>
   </div>
 );
