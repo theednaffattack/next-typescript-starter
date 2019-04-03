@@ -13,14 +13,33 @@ export default () => {
       <RegisterComponent mutation={registerMutation}>
         {register => (
           <Formik
-            onSubmit={async data => {
-              const response = await register({
-                variables: {
-                  data
-                }
-              });
+            validateOnBlur={false}
+            validateOnChange={false}
+            onSubmit={async (data, { setErrors }) => {
+              let response: any;
+              try {
+                response = await register({
+                  variables: {
+                    data
+                  }
+                });
+              } catch (error) {
+                const displayErrors: { [key: string]: string } = {};
 
-              console.log(response);
+                let myErrors =
+                  error.graphQLErrors[0].extensions.exception.validationErrors;
+
+                myErrors.forEach((validationError: any) => {
+                  Object.values(validationError.constraints).forEach(
+                    (message: any) => {
+                      displayErrors[validationError.property] = message;
+                    }
+                  );
+                });
+                return setErrors(displayErrors);
+              }
+              console.log("response below try catch");
+              console.log(await response);
             }}
             initialValues={{
               firstName: "",
